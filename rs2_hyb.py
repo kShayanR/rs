@@ -43,7 +43,6 @@ def get_user_reviews(user_id):
         print(f"No reviews found for user_id: {user_id}")
     return user_reviews.index.tolist()
 
-# Function to get the most similar reviews
 def get_similar_reviews(user_id):
     user_reviews_idx = get_user_reviews(user_id)
     if not user_reviews_idx:
@@ -53,19 +52,16 @@ def get_similar_reviews(user_id):
     for idx in user_reviews_idx:
         sim_scores.extend(list(enumerate(cosine_sim[idx])))
 
-    # Sort and get the top 10 reviews
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[:10]
     similar_reviews_idx = [i[0] for i in sim_scores]
     return reviews.iloc[similar_reviews_idx]
 
-# Function to combine collaborative and content-based filtering
 def hybrid_recommendations(user_id):
     if user_id not in reviews['user_id'].values:
         print(f"User ID {user_id} does not exist in the reviews dataset.")
         return pd.DataFrame()
 
-    # Get collaborative filtering recommendations
     user_ratings = reviews[reviews['user_id'] == user_id]
     if user_ratings.empty:
         print(f"No ratings found for user_id: {user_id}")
@@ -73,7 +69,6 @@ def hybrid_recommendations(user_id):
     user_ratings = user_ratings[['location_id', 'rating']].groupby('location_id').mean().reset_index()
     user_ratings = user_ratings.sort_values('rating', ascending=False)
     
-    # Get content-based recommendations
     similar_reviews = get_similar_reviews(user_id)
     if similar_reviews.empty:
         print(f"No similar reviews found for user_id: {user_id}")
@@ -82,14 +77,12 @@ def hybrid_recommendations(user_id):
     similar_locations.columns = ['location_id', 'count']
     similar_locations = similar_locations.sort_values('count', ascending=False)
     
-    # Combine the recommendations
     hybrid_recs = pd.merge(user_ratings, similar_locations, on='location_id', how='outer').fillna(0)
     hybrid_recs['score'] = hybrid_recs['rating'] + hybrid_recs['count']
     hybrid_recs = hybrid_recs.sort_values('score', ascending=False)
     
     return hybrid_recs
 
-# Example usage
-user_id = 986  # Replace with a valid user_id from your dataset
+user_id = 986
 recommendations = hybrid_recommendations(user_id)
 print(recommendations)

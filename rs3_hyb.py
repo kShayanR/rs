@@ -9,7 +9,6 @@ users = pd.read_csv('datasets/users.csv')
 reviews = pd.read_csv('datasets/reviews.csv')
 details = pd.read_csv('datasets/details.csv')
 
-# Handle missing values appropriately
 details['description'] = details['description'].fillna('')
 details['web_url'] = details['web_url'].fillna('')
 details['city'] = details['city'].fillna('')

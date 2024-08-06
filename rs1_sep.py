@@ -1,21 +1,9 @@
-# Activate the Virtual Environment:
-# - .\myenv\Scripts\Activate.ps1 | .\myenv\Scripts\activate (on PowerShell)
-# OR
-# - myenv\Scripts\activate (on CMD)
-# --------------------------------------------------------------------------
-# Install the requirements:
+
 # - pip install pandas scikit-learn
 # - pip install numpy<2
 # - pip install scikit-surprise
 # - pip install textblob
-# --------------------------------------------------------------------------
-# Run the Script
-# - py script.py
 
-
-# LDA
-# Latent Dirichlet Allocation
-# key-phrase extraction
 
 #################--- Collaborative ---#################
 
